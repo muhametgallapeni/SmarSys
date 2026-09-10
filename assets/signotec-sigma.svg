@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-label="Digital signature pad illustration">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f7fbff"/>
+      <stop offset="100%" stop-color="#dfeaf5"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#2d3748"/>
+    </linearGradient>
+    <linearGradient id="screen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#eef4fb"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="160%">
+      <feDropShadow dx="0" dy="20" stdDeviation="18" flood-color="#0a1726" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="800" height="520" rx="34" fill="url(#bg)"/>
+  <ellipse cx="404" cy="432" rx="204" ry="28" fill="#cad8e5" opacity="0.5"/>
+  <g filter="url(#shadow)">
+    <rect x="160" y="110" width="420" height="220" rx="22" fill="url(#body)"/>
+    <rect x="184" y="134" width="372" height="172" rx="14" fill="url(#screen)" stroke="#d6e0eb"/>
+    <path d="M244 244c19-26 38-38 57-38 15 0 28 10 35 31 12-26 28-39 48-39 23 0 39 17 47 51 7 32 10 49 22 49 11 0 23-15 35-46l25 8c-16 41-35 61-60 61-29 0-39-23-47-59-6-26-11-38-21-38-12 0-24 17-36 51l-23 1c-7-24-17-36-30-36-9 0-21 9-35 28l-17-24Z" fill="#0f172a" opacity="0.92"/>
+    <text x="211" y="166" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#607289">Digital signature</text>
+    <circle cx="370" cy="318" r="6" fill="#4fd1c5"/>
+    <rect x="304" y="312" width="138" height="12" rx="6" fill="#1f2937" opacity="0.35"/>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="468" y="82" width="34" height="188" rx="17" fill="#d9e2ec" transform="rotate(30 468 82)"/>
+    <rect x="474" y="89" width="22" height="134" rx="11" fill="#1e293b" transform="rotate(30 474 89)"/>
+    <path d="M560 158l25 15-16 28c-4 7-13 10-20 6l-9-5 20-44Z" fill="#22c1c3"/>
+    <path d="M585 173l15 8-16 16-8-5 9-19Z" fill="#fb7185"/>
+  </g>
+  <text x="160" y="385" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="800" fill="#07111f">Compatible signature device</text>
+  <text x="160" y="422" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="700" fill="#1699ec">Signotec Sigma</text>
+  <text x="160" y="456" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="20" fill="#53657a">Illustrative preview for website presentation</text>
+</svg>

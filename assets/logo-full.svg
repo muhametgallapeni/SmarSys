@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 160" role="img" aria-label="SmarSys logo">
+  <defs>
+    <linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1db7ff"/>
+      <stop offset="100%" stop-color="#0c5ed7"/>
+    </linearGradient>
+    <linearGradient id="lg2" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2ed4b3"/>
+      <stop offset="100%" stop-color="#1498e5"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(10 16)">
+    <path d="M110 11H53c-6 0-12 2-16 7L20 32c-6 5-10 12-10 20 0 12 10 22 22 22h46c4 0 8 4 8 8s-4 8-8 8H25c-8 0-14 6-14 14s6 14 14 14h57c6 0 12-2 16-7l17-15c6-5 10-13 10-21 0-12-10-22-22-22H57c-4 0-8-4-8-8s4-8 8-8h53c8 0 14-6 14-14s-6-14-14-14Z" fill="url(#lg1)" opacity="0.98"/>
+    <path d="M13 89c0-8 6-14 14-14h42c11 0 20 9 20 20 0 4-2 9-5 12l-12 11H27c-8 0-14-6-14-14Z" fill="url(#lg2)"/>
+    <path d="M49 34h38c5 0 10-5 10-10s-5-10-10-10H53c-4 0-8 2-12 5L28 30c-2 2-4 5-4 8 0 7 6 12 12 12h42c6 0 10 4 10 10 0 5-4 10-10 10H36c-8 0-14 6-14 14s6 14 14 14h34c4 0 8-2 12-5l13-11c2-2 4-5 4-8 0-7-6-12-12-12H44c-6 0-10-5-10-10s4-10 10-10Z" fill="#ffffff" opacity="0.96"/>
+    <circle cx="87" cy="24" r="6.3" fill="#ffffff"/>
+    <circle cx="38" cy="99" r="6.3" fill="#ffffff"/>
+  </g>
+  <text x="160" y="108" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="82" font-weight="700" letter-spacing="-2.2" fill="#062f6f">Smar</text>
+  <text x="363" y="108" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="82" font-weight="700" letter-spacing="-2.2" fill="#1699ec">Sys</text>
+</svg>

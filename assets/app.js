@@ -36,27 +36,93 @@ const translations = {
 
 for (const [lang, values] of Object.entries({"sq":{"navHome":"Ballina","homeTitle":"Software për","homeAccent":"punën e përditshme.","homeLead":"Njihuni me produktet tona: Poligon App dhe SmarsysVilla. Dy produkte, një fokus te proceset reale.","exploreProducts":"Zbulo produktet","ourProducts":"Produktet tona","productsLead":"Zgjidh produktin për të mësuar më shumë.","poligonCategory":"Menaxhim i poligoneve","poligonIntro":"Klientët, linjat dhe sesionet në një vend, me lexim NFC të identitetit dhe nënshkrim elektronik.","explorePoligon":"Zbulo Poligon App","watchIdDemo":"Shiko leximin e ID →","comingSoon":"Së shpejti","villaIntro":"Produkti i ri nga SmarSys. Prezantimi i plotë dhe videoja demonstruese do të publikohen së shpejti.","exploreVilla":"Zbulo SmarsysVilla","generalContactTitle":"Bisedo me SmarSys për produktet tona.","idDemoTitle":"Leximi i kartës së identitetit, hap pas hapi.","idDemoLead":"Shiko demonstrimin e leximit të dokumentit personal dhe kalimin e të dhënave në Poligon App.","videoNote":"Shiko videon në Android, iPhone ose kompjuter.","videoFallback":"Hap videon"},"en":{"navHome":"Home","homeTitle":"Software for","homeAccent":"everyday operations.","homeLead":"Meet Poligon App and SmarsysVilla. Two products, one focus on real workflows.","exploreProducts":"Explore our products","ourProducts":"Our products","productsLead":"Choose a product to learn more.","poligonCategory":"Shooting range management","poligonIntro":"Clients, lanes and sessions in one place, with NFC identity reading and digital signatures.","explorePoligon":"Explore Poligon App","watchIdDemo":"Watch ID reading →","comingSoon":"Coming soon","villaIntro":"A new product from SmarSys. The full introduction and demonstration video are coming soon.","exploreVilla":"Explore SmarsysVilla","generalContactTitle":"Talk to SmarSys about our products.","idDemoTitle":"ID card reading, step by step.","idDemoLead":"Watch the demonstration of personal identification card reading and the transfer of data into Poligon App.","videoNote":"Watch on Android, iPhone or desktop.","videoFallback":"Open video"},"de":{"navHome":"Startseite","homeTitle":"Software für","homeAccent":"den Arbeitsalltag.","homeLead":"Entdecken Sie Poligon App und SmarsysVilla. Zwei Produkte mit Fokus auf reale Arbeitsabläufe.","exploreProducts":"Produkte entdecken","ourProducts":"Unsere Produkte","productsLead":"Wählen Sie ein Produkt, um mehr zu erfahren.","poligonCategory":"Schießstand-Management","poligonIntro":"Kunden, Bahnen und Sessions an einem Ort, mit NFC-Identifikation und digitalen Unterschriften.","explorePoligon":"Poligon App entdecken","watchIdDemo":"ID-Erfassung ansehen →","comingSoon":"Demnächst","villaIntro":"Ein neues Produkt von SmarSys. Die vollständige Vorstellung und das Demovideo folgen in Kürze.","exploreVilla":"SmarsysVilla entdecken","generalContactTitle":"Sprechen Sie mit SmarSys über unsere Produkte.","idDemoTitle":"ID-Karten lesen, Schritt für Schritt.","idDemoLead":"Sehen Sie, wie ein Ausweisdokument gelesen und die Daten in Poligon App übernommen werden.","videoNote":"Auf Android, iPhone oder Computer ansehen.","videoFallback":"Video öffnen"}})) Object.assign(translations[lang], values);
 
-if (window.siteTranslations) { for (const [lang, values] of Object.entries(window.siteTranslations)) Object.assign(translations[lang], values); }
+if (window.siteTranslations) { for (const [lang, values] of Object.entries(window.siteTranslations)) Object.assign(translations[lang] ||= {}, values); }
 
-const languageNames = { sq:'sq', en:'en', de:'de' };
 const langButtons = document.querySelectorAll('[data-lang]');
+const hasLanguage = lang => typeof lang === 'string' && Object.hasOwn(translations, lang);
+const countryLanguages = {
+  XK: 'sq', AL: 'sq', DE: 'de', AT: 'de', LI: 'de', IT: 'it',
+  TR: 'tr', FR: 'fr', MC: 'fr', MK: 'mk', ME: 'cnr', RS: 'sr'
+};
+const multilingualCountries = new Set(['CH', 'BE', 'LU', 'CA']);
+let languageChosen = false;
 
-function setLanguage(lang){
-  if(!translations[lang]) lang='sq';
-  document.documentElement.lang = languageNames[lang];
+function setLanguage(lang, remember = false){
+  if(!hasLanguage(lang)) lang='en';
+  document.documentElement.lang = lang;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
-    if(translations[lang][key]) el.textContent = translations[lang][key];
+    const value = translations[lang][key] ?? translations.en[key];
+    if(typeof value === 'string') el.textContent = value;
   });
-  langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang===lang));
-  try { localStorage.setItem('smarsys-lang', lang); } catch {}
+  langButtons.forEach(btn => {
+    const active = btn.dataset.lang===lang;
+    btn.classList.toggle('active', active);
+    btn.setAttribute('aria-pressed', String(active));
+  });
+  if (remember) {
+    languageChosen = true;
+    try { localStorage.setItem('smarsys-language-choice', lang); } catch {}
+  }
   document.dispatchEvent(new CustomEvent('languagechange', { detail: lang }));
 }
 
-langButtons.forEach(btn => btn.addEventListener('click',()=>setLanguage(btn.dataset.lang)));
-let savedLanguage = 'sq';
-try { savedLanguage = localStorage.getItem('smarsys-lang') || 'sq'; } catch {}
-setLanguage(savedLanguage);
+function browserLanguage() {
+  const preferences = navigator.languages?.length ? navigator.languages : [navigator.language];
+  for (const preference of preferences) {
+    const lang = String(preference || '').toLowerCase().split(/[-_]/)[0];
+    if (hasLanguage(lang)) return lang;
+  }
+  return 'en';
+}
+
+function languageForCountry(country) {
+  const code = typeof country === 'string' ? country.toUpperCase() : '';
+  if (multilingualCountries.has(code)) return browserLanguage();
+  const lang = countryLanguages[code];
+  return hasLanguage(lang) ? lang : 'en';
+}
+
+async function initializeLanguage() {
+  // The previous key stored automatic defaults too, so it cannot identify a user choice.
+  let savedLanguage;
+  try { savedLanguage = localStorage.getItem('smarsys-language-choice'); } catch {}
+  if (hasLanguage(savedLanguage)) {
+    languageChosen = true;
+    setLanguage(savedLanguage);
+    return;
+  }
+  setLanguage('en');
+  let controller;
+  let timeout;
+  try {
+    let country;
+    try { country = sessionStorage.getItem('smarsys-country'); } catch {}
+    if (!country) {
+      controller = new AbortController();
+      timeout = setTimeout(() => controller.abort(), 2500);
+      // IP country only; no browser location permission or API key is needed.
+      const response = await fetch('https://ipwho.is/?fields=success,country_code', {
+        signal: controller.signal, credentials: 'omit', referrerPolicy: 'no-referrer'
+      });
+      if (!response.ok) throw new Error('Country lookup failed');
+      const result = await response.json();
+      if (result.success !== true || !/^[A-Z]{2}$/.test(result.country_code)) {
+        throw new Error('Invalid country response');
+      }
+      country = result.country_code;
+      try { sessionStorage.setItem('smarsys-country', country); } catch {}
+    }
+    if (!languageChosen) setLanguage(languageForCountry(country));
+  } catch {
+    if (!languageChosen) setLanguage('en');
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+langButtons.forEach(btn => btn.addEventListener('click',()=>setLanguage(btn.dataset.lang, true)));
+initializeLanguage();
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
